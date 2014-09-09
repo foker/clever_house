@@ -1,17 +1,18 @@
 package message
 
 import (
-	"crypto/md5"
+	"../util"
+	"log"
 	"os"
 	"os/exec"
 	"time"
 )
 
-func Play(messages []string, backgroundMusicFile string){
+func Play(messages []string, backgroundMusicFile string) error {
 	var mFiles []string
 
 	for i := 0; i < len(messages); i++ {
-		messageFile := getMD5(messages[i]) + ".mp3"
+		messageFile := util.GetMD5(messages[i]) + ".mp3"
 		mFiles = append(mFiles, messageFile)
 		//Скачиваем файл с сообщением
 		if err := exec.Command("wget", "-q", "-U Mozilla", "-O"+messageFile, "http://translate.google.com/translate_tts?ie=UTF-8&tl=ru&q="+messages[i]).Run(); err != nil {
@@ -71,6 +72,5 @@ func Play(messages []string, backgroundMusicFile string){
 	}
 
 	return nil
-
 
 }
